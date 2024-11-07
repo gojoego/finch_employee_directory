@@ -4,26 +4,26 @@
 }
 
 h1 {
-  margin-bottom: 10px; /* Keep this minimal */
+  margin-bottom: 10px;
 }
 
 h2 {
-  margin-top: 5px; /* Reduced margin for personal info */
-  margin-bottom: 5px; /* Reduce bottom margin */
+  margin-top: 5px; 
+  margin-bottom: 5px; 
 }
 
 h3 {
-  margin: 5px 0; /* Maintain small margins for subheadings */
+  margin: 5px 0; 
 }
 
 ul {
   list-style-type: none;
   padding: 0;
-  margin: 5px 0; /* Reduce margin between lists */
+  margin: 5px 0; 
 }
 
 li {
-  margin: 3px 0; /* Reduced margin for list items */
+  margin: 3px 0; 
   cursor: pointer;
 }
 

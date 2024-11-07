@@ -29,16 +29,43 @@ export interface DirectoryResponse {
     individuals: Employee[];
 }
 
-export interface CompanyDetails {
+export interface CompanyInfo {
     id: string;
     legal_name: string;
+    entity: {
+        type: 'non_profit'; // You can adjust this if you have other entity types
+        subtype?: string; // Optional, can be null
+    };
     ein: string;
     primary_email: string;
     primary_phone_number: string;
+    departments: Department[];
+    locations: Location[];
+    accounts: Account[];
 }
 
-export interface PersonalInfo {
-    
+export interface Department {
+    name: string;
+    parent?: {
+        name: string | null; // Optional parent name
+    };
+}
+
+export interface Location {
+    line1: string;
+    line2?: string; // Optional
+    city: string;
+    state: string;
+    postal_code: string;
+    country: string;
+}
+
+export interface Account {
+    institution_name: string;
+    account_name?: string | null; // Optional account name
+    account_number: string;
+    account_type: string;
+    routing_number: string;
 }
 
 export interface Email {
@@ -101,6 +128,7 @@ export interface EmploymentInfo {
     income_history: IncomeHistory[]; // Add this line
     custom_fields: CustomField[]; // Add this line
 }
+
 export interface DirectoryResponse {
     paging: {
         count: number;
