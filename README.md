@@ -2,7 +2,7 @@ Hi! Here are some instructions on how to run this app locally on your machine.
 
 prereqs
 - Git will be needed to clone the project to your machine: you can download and install it from git-scm.com 
-- Node will be needed to install 
+- Node will be needed to install dependencies, you can download it from nodejs.org 
 
 1.  open terminal/command prompt 
 2.  clone the repo by running this command 
