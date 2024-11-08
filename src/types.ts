@@ -33,8 +33,8 @@ export interface CompanyInfo {
     id: string;
     legal_name: string;
     entity: {
-        type: 'non_profit'; // You can adjust this if you have other entity types
-        subtype?: string; // Optional, can be null
+        type: 'non_profit'; 
+        subtype?: string; 
     };
     ein: string;
     primary_email: string;
@@ -80,7 +80,7 @@ export interface PhoneNumber {
 
 export interface Residence {
     line1: string;
-    line2?: string; // Optional
+    line2?: string; 
     city: string;
     state: string;
     postal_code: string;
@@ -93,7 +93,7 @@ export interface IndividualInfo {
     middle_name?: string;
     last_name: string;
     preferred_name?: string | null;
-    dob: string; // Date of birth
+    dob: string; 
     emails: Email[];
     phone_numbers: PhoneNumber[];
     gender: string;
@@ -113,20 +113,20 @@ export interface EmploymentInfo {
     class_code: string;
     location: {
         line1: string;
-        line2?: string; // Optional
+        line2?: string;
         city: string;
         state: string;
         postal_code: string;
         country: string;
     };
     income: {
-        unit: string; // e.g., "yearly"
-        amount: number; // Amount in cents
-        currency: string; // e.g., "USD"
-        effective_date: string; // Date the income is effective
+        unit: string; 
+        amount: number; 
+        currency: string; 
+        effective_date: string; 
     };
-    income_history: IncomeHistory[]; // Add this line
-    custom_fields: CustomField[]; // Add this line
+    income_history: IncomeHistory[]; 
+    custom_fields: CustomField[]; 
 }
 
 export interface DirectoryResponse {
@@ -134,7 +134,7 @@ export interface DirectoryResponse {
         count: number;
         offset: number;
     };
-    individuals: Employee[]; // Employee type should be defined if used
+    individuals: Employee[]; 
 }
 
 export interface Employee {
@@ -143,14 +143,13 @@ export interface Employee {
     middle_name?: string;
     last_name: string;
     is_active: boolean;
-    // Add other fields as needed
 }
 
 export interface IncomeHistory {
-    unit: string; // e.g., "yearly"
-    amount: number; // Amount in cents
-    currency: string; // e.g., "USD"
-    effective_date: string; // Date the income was effective
+    unit: string; 
+    amount: number; 
+    currency: string; 
+    effective_date: string; 
 }
 
 export interface CustomField {

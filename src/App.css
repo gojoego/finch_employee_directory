@@ -30,3 +30,18 @@ li {
 li:hover {
   text-decoration: underline;
 }
+
+.dropdown-menu {
+  border-width: 1px; 
+  border-style: solid;
+  border-color: #cac; 
+  border-radius: px; 
+}
+
+.provider-button {
+  border-width: .2px; /* Adjust the border thickness (e.g., 1px or smaller) */
+  border-style: solid; /* Ensures the border is visible */
+  border-color: #ccc; /* Optionally set a color */
+  padding: 5px 10px; /* Adjust padding as needed */
+  border-radius: 4px; /* Optional: Add or remove rounding of corners */
+}

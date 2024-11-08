@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React from "react";
 import { Provider as ProviderType } from "../types";
 
 const PROVIDERS: ProviderType[] = [
@@ -7,33 +7,33 @@ const PROVIDERS: ProviderType[] = [
     { id: 'justworks', name: 'Justworks' },
     { id: 'paychex_flex', name: 'Paychex Flex' },
     { id: 'workday', name: 'Workday' }
-  ]
+];
 
-  interface ProviderMenuProps {
-    onSelectProvider: (providerId: string) => void; // Callback function type
+interface ProviderMenuProps {
+    onSelectProvider: (providerId: string) => void;
+    onCreateToken: (providerId: string) => void;
 }
 
-const DropdownMenu: React.FC<ProviderMenuProps> = ({ onSelectProvider }) => {
-    const [selectedProvider, setSelectedProvider] = useState<string>(PROVIDERS[0].id); // Default to the first provider
+const DropdownMenu: React.FC<ProviderMenuProps> = ({ onSelectProvider, onCreateToken }) => {
+    const handleSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        const selectedProviderId = event.target.value;
+        onSelectProvider(selectedProviderId);
 
-    const handleProviderChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        const providerId = event.target.value;
-        setSelectedProvider(providerId);
-        onSelectProvider(providerId); // Call the passed function to notify parent
+        // Check if token already exists before creating a new one
+        const storedToken = localStorage.getItem(`access_token_${selectedProviderId}`);
+        if (!storedToken) {
+            onCreateToken(selectedProviderId); // Create token if not in storage
+        }
     };
-    
+
     return (
-        <div style={{ flex:.3, marginRight: '2px' }}>
-            <h2>Choose Provider</h2>
-            <select value={selectedProvider} onChange={handleProviderChange}>
-                {PROVIDERS.map(provider => (
-                    <option value={provider.id} key={provider.id}>
-                        {provider.name}
-                    </option>
-                ))}
-            </select>
-        </div>
+        <select onChange={handleSelect} className="provider-button">
+            <option value="">Select a Provider</option>
+            {PROVIDERS.map(provider => (
+                <option key={provider.id} value={provider.id}>{provider.name}</option>
+            ))}
+        </select>
     );
-}
+};
 
 export default DropdownMenu;

@@ -5,12 +5,11 @@ import EmploymentInfo from './components/EmploymentInfo';
 import IndividualInfo from './components/PersonalInfo';
 import DropdownMenu from './components/DropdownMenu';
 import {
-  Employee, Provider, EmploymentInfo as EmploymentInfoType,
+  Employee, EmploymentInfo as EmploymentInfoType,
   IndividualInfo as IndividualInfoType,
+  DirectoryResponse,
 } from './types';
 import CompanyInfo from './components/CompanyInfo';
-
-const TEST_TOKEN = '';
 
 const App: React.FC = () => {
   const [employees, setEmployees] = useState<Employee[]>([]);
@@ -21,72 +20,64 @@ const App: React.FC = () => {
   const [selectedEmployeeId, setSelectedEmployeeId] = useState<string | null>(null);
   const [individualInfo, setIndividualInfo] = useState<IndividualInfoType | null>(null);
   const [employmentInfo, setEmploymentInfo] = useState<EmploymentInfoType | null>(null);
+  const [error, setError] = useState<string | null>(null); // New state for error messages
 
-  // useEffect(() => {
-  //     const initializeSandbox = async () => {
-  //         const sandboxData = await createSandbox('gusto');
-  //         setAccessToken(sandboxData.access_token);
-  //         setCompanyInfo(sandboxData.company_id); 
-  //     };
-
-  //     initializeSandbox();
-  // }, [selectedProvider]);
-
-  //   useEffect(() => {
-  //     // Set company info based on the selected provider
-  //     const setCompanyInfo = (providerId: string) => {
-  //         // You could add logic to customize this message based on the provider
-  //         setCompanyInfo(`Using provider: ${providerId}`);
-  //     };
-
-  //     setCompanyInfo(selectedProvider);
-  // }, [selectedProvider]);
-
-  useEffect(() => {
-    const getCompanyInfo = async () => {
-      try {
-        const info = await fetchCompanyInfo(TEST_TOKEN);
-        setCompanyInfo(info);
-      } catch (error) {
-        console.error('Error fetching company info:', error);
-      }
-    };
-
-    getCompanyInfo();
-  }, []);
-
-
-  useEffect(() => {
-    const getEmployees = async () => {
-      if (TEST_TOKEN) {
-        const directoryData = await fetchEmployeeDirectory(TEST_TOKEN);
-        setEmployees(directoryData.individuals);
-        setLoading(false);
-      }
-    };
-
-    getEmployees();
-  }, []);
-
-  const onSelectEmployee = (id: string) => {
-    setSelectedEmployeeId(id);
+  const handleSelectProvider = (id: string) => {
+    setSelectedProvider(id);
+    setError(null); 
   };
 
-  const onSelectProvider = (providerId: string) => {
-    console.log("Selected provider ID:", providerId);
-    // TODO 
+  const handleCreateToken = async (id: string) => {
+    setError(null); 
+    try {
+      const tokenResponse = await createSandbox(id);
+      setAccessToken(tokenResponse.access_token); 
+      fetchData(tokenResponse.access_token);
+    } catch (error) {
+      setError("Failed to create sandbox or invalid provider ID."); 
+      console.error("Error creating sandbox:", error);
+    }
   };
+
+  const fetchData = async (token: string) => {
+    setLoading(true);
+    setError(null); 
+    try {
+      const companyData = await fetchCompanyInfo(token);
+      setCompanyInfo(companyData);
+      
+      const employeeData: DirectoryResponse = await fetchEmployeeDirectory(token);
+      setEmployees(employeeData.individuals); 
+    } catch (error) {
+      setError("Error fetching company or employee data."); 
+      console.error("Error fetching data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (selectedProvider) {
+      const storedToken = localStorage.getItem(`access_token_${selectedProvider}`);
+      if (storedToken) {
+        setAccessToken(storedToken);
+        fetchData(storedToken);
+      }
+    }
+  }, [selectedProvider]);
 
   useEffect(() => {
     const getIndividualAndEmploymentInfo = async () => {
       if (selectedEmployeeId) {
+        setError(null); 
         try {
-          const individualData = await fetchIndividualInfo(TEST_TOKEN, selectedEmployeeId);
+          const individualData = await fetchIndividualInfo(accessToken, selectedEmployeeId);
           setIndividualInfo(individualData);
 
-          const employmentData = await fetchEmploymentInfo(TEST_TOKEN, selectedEmployeeId);
+          const employmentData = await fetchEmploymentInfo(accessToken, selectedEmployeeId);
           setEmploymentInfo(employmentData);
         } catch (error) {
+          setError("Error fetching individual or employment info.");
           console.error('Error fetching individual or employment info:', error);
         }
       }
@@ -96,15 +87,32 @@ const App: React.FC = () => {
   }, [selectedEmployeeId]);
 
   return (
-    <div className="App" style={{ display: 'flex', padding: '50px' }}>
-      <DropdownMenu onSelectProvider={onSelectProvider} />
-      {companyInfo && <CompanyInfo{...companyInfo} />}
-      <EmployeeList employees={employees} onSelectEmployee={onSelectEmployee} />
-      {individualInfo && <IndividualInfo{...individualInfo} />}
-      {employmentInfo && <EmploymentInfo{...employmentInfo} />}
+    <div className="App" style={{ display: 'flex', flexDirection: 'column', padding: '40px' }}>
+      <DropdownMenu onSelectProvider={handleSelectProvider} onCreateToken={handleCreateToken} />
+      
+      {error && <p style={{ color: 'red' }}>{error}</p>}
+  
+      {!error && (
+        <>
+          {loading && <p>Loading...</p>}
+          {companyInfo && <CompanyInfo {...companyInfo} />}
+          
+          {/* Flex container for employee list and additional info */}
+          <div>
+            <div style={{ flex: 1, marginRight: '20px' }}>
+              <EmployeeList employees={employees} onSelectEmployee={setSelectedEmployeeId} />
+            </div>
+            
+          
+              {individualInfo && Object.keys(individualInfo).length > 0 && <IndividualInfo {...individualInfo} />}
+              {employmentInfo && Object.keys(employmentInfo).length > 0 && <EmploymentInfo {...employmentInfo} />}
+            
+          </div>
+        </>
+      )}
     </div>
   );
-};
-
+}  
 
 export default App;
+
