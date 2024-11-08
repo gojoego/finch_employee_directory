@@ -20,7 +20,7 @@ const App: React.FC = () => {
   const [selectedEmployeeId, setSelectedEmployeeId] = useState<string | null>(null);
   const [individualInfo, setIndividualInfo] = useState<IndividualInfoType | null>(null);
   const [employmentInfo, setEmploymentInfo] = useState<EmploymentInfoType | null>(null);
-  const [error, setError] = useState<string | null>(null); // New state for error messages
+  const [error, setError] = useState<string | null>(null);
 
   const handleSelectProvider = (id: string) => {
     setSelectedProvider(id);

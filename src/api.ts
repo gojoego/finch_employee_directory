@@ -7,11 +7,10 @@ export const createSandbox = async (providerId: string): Promise<SandboxResponse
             provider_id: providerId,
             products: ["company", "directory", "individual", "employment"],
         });
-        console.log("Token:", response.data);
         return response.data;
     } catch (error) {
         handleApiError(error);
-        throw error; // Re-throw after handling to ensure proper handling downstream
+        throw error; 
     }
 };
 

@@ -18,10 +18,19 @@ prereqs
 
     npm install 
 
-5.  all the dependencies should be install and the app should run by
+5.  a few more dependencies are needed, for this we need to go into the source folder:
+
+    cd src
+
+6.  run this to install them:
+
+    npm install react@latest react-dom@latest
+
+7.  all the dependencies should be install and the app should run by
     entering this command: 
 
     npm start
 
-6.  http://localhost:3000 should open up automatically in your default browser 
+8.  http://localhost:3000 should open up automatically in your default browser 
     but you can copy and paste this address into your browser of choice 
+    (unless if you already have something else running at that port, could be 3001, 300X...)
