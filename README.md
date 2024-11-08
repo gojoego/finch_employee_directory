@@ -1,4 +1,4 @@
-Hi! Here are some instructions on how to run this app locally on your machine.
+Hi! Here are the instructions on how to run this app locally on your machine.
 
 prereqs
 - Git will be needed to clone the project to your machine: you can download and install it from git-scm.com 
@@ -26,11 +26,15 @@ prereqs
 
     npm install react@latest react-dom@latest
 
-7.  all the dependencies should be install and the app should run by
+7.  we'll have to move back into the root folder to run the program:
+
+    cd ..
+
+8.  all the dependencies should be install and the app should run by
     entering this command: 
 
     npm start
 
-8.  http://localhost:3000 should open up automatically in your default browser 
+9.  http://localhost:3000 should open up automatically in your default browser 
     but you can copy and paste this address into your browser of choice 
-    (unless if you already have something else running at that port, could be 3001, 300X...)
+    (unless if you already have something else running at that port, could be 3001, 3002, 300X...)
